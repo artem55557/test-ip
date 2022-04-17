@@ -13,16 +13,7 @@ module.exports = {
   // add your custom rules here
   rules: {
     'comma-dangle': 0,
-    'vue/max-attributes-per-line': [
-      'error',
-      {
-        singleline: {
-          max: 2,
-        },
-        multiline: {
-          max: 2,
-        },
-      },
-    ],
+    'vue/max-attributes-per-line': 'off',
+    'space-before-function-paren': 'off',
   },
 }
