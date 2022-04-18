@@ -1,5 +1,5 @@
 <template>
-  <label class="the-input text-sm" :class="requiredClass">
+  <label class="the-input text-sm" :class="styleClass">
     <div class="the-input__label text-xs">{{ label }}</div>
     <component
       :is="htmlTagInput"
@@ -10,7 +10,7 @@
       :value="value"
       @input="updateValue($event.target.value)"
     />
-    <div class="the-input__error-text"></div>
+    <div class="the-input__error-text text-xxs">{{ error }}</div>
   </label>
 </template>
 <script>
@@ -36,6 +36,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    error: {
+      type: String,
+      default: '',
+    },
     value: {
       type: String,
       default: '',
@@ -49,8 +53,11 @@ export default {
     htmlTagInput() {
       return this.textarea ? 'textarea' : 'input'
     },
-    requiredClass() {
-      return this.required ? 'the-input--required' : ''
+    styleClass() {
+      let classes = ''
+      if (this.required) classes += 'the-input--required'
+      if (this.error) classes += ' the-input--error'
+      return classes
     },
   },
   methods: {
@@ -74,8 +81,8 @@ export default {
 
   input,
   textarea {
-    background: #fffefb;
-    color: #b4b4b4;
+    background: $c-white;
+    color: $c-gray-500;
     border: 1px solid transparent;
     border-radius: 4px;
     box-sizing: border-box;
@@ -84,7 +91,8 @@ export default {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
 
-    &:focus {
+    &:focus,
+    &:active {
       outline: none;
       box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
 
@@ -98,7 +106,7 @@ export default {
       transition: all 0.3s ease-in-out;
       font-size: 0.75rem;
       line-height: 0.9375rem;
-      color: #b4b4b4;
+      color: $c-gray-500;
     }
   }
 
@@ -109,8 +117,9 @@ export default {
 
   &__error-text {
     position: absolute;
-    bottom: 0;
+    bottom: -12px;
     left: 0;
+    color: $c-rose-400;
   }
 
   &--required {
@@ -122,7 +131,13 @@ export default {
       margin-top: 1px;
       margin-left: 1px;
       border-radius: 100%;
-      background: #ff8484;
+      background: $c-rose-400;
+    }
+  }
+
+  &--error {
+    input {
+      border-color: $c-rose-400;
     }
   }
 }

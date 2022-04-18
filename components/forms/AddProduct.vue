@@ -6,9 +6,12 @@
       :label="input.label"
       :placeholder="input.placeholder"
       :required="input.required"
+      :error="input.error"
       :textarea="input.textarea"
     ></the-input>
-    <the-button :disabled="true">Добавить товар</the-button>
+    <the-button :disabled="true" class="w-100"
+      ><template #label>Добавить товар</template></the-button
+    >
   </form>
 </template>
 <script>
@@ -41,6 +44,7 @@ export default {
           label: 'Ссылка на изображение товара',
           placeholder: 'Введите ссылку',
           required: true,
+          error: 'Поле является обязательным',
         },
         {
           id: 3,
@@ -58,10 +62,13 @@ export default {
 <style lang="scss" scoped>
 .form {
   padding: 24px;
-  background: #fffefb;
+  background: $c-white;
   box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04),
     0px 6px 10px rgba(0, 0, 0, 0.02);
   border-radius: 4px;
+  position: sticky;
+  top: 0;
+
   & * {
     margin-bottom: 16px;
   }

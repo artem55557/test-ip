@@ -1,6 +1,7 @@
 <template>
   <button class="the-button" :class="styleClass" :disabled="disabled">
-    <slot></slot>
+    <span v-if="icon" class="the-button__icon"><slot name="icon"></slot></span>
+    <span v-if="!iconOnly"><slot name="label"></slot></span>
   </button>
 </template>
 <script>
@@ -11,10 +12,26 @@ export default {
       type: Boolean,
       default: false,
     },
+    success: {
+      type: Boolean,
+      default: false,
+    },
+    icon: {
+      type: Boolean,
+      default: false,
+    },
+    iconOnly: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     styleClass() {
-      return this.disabled ? `the-button--disabled` : 'the-button--success'
+      let classes = ''
+      if (this.disabled) classes += ' the-button--disabled'
+      if (this.success) classes += ' the-button--success'
+      if (this.iconOnly) classes += ' the-button--icon-only'
+      return classes
     },
   },
 }
@@ -28,7 +45,6 @@ export default {
   line-height: 0.9375rem;
   border: none;
   border-radius: 10px;
-  width: 100%;
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -36,14 +52,26 @@ export default {
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 
+  &__icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+
   &--disabled {
-    background: #eeeeee;
-    color: #b4b4b4;
+    background: $c-gray-300;
+    color: $c-gray-500;
   }
 
   &--success {
     color: #ffffff;
-    background: #7bae73;
+    background: $c-green-600;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &--icon-only {
+    padding: 8px;
+    background: $c-rose-400;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 
