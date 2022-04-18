@@ -3,7 +3,7 @@ export default {
   head: {
     title: 'test-project',
     htmlAttrs: {
-      lang: 'en',
+      lang: 'ru',
     },
     meta: [
       { charset: 'utf-8' },
@@ -30,7 +30,14 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/svg-sprite', '@nuxtjs/style-resources'],
+
+  svgSprite: {
+    // manipulate module options
+    // elementClass: 'icon inline-block',
+  },
+
+  styleResources: { scss: ['~/assets/scss/_variables.scss'] },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

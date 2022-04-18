@@ -1,0 +1,52 @@
+html,
+body {
+  font-family: SourceSansPro, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.25rem;
+}
+
+.heading-1 {
+  font-weight: 600;
+  font-size: 1.75rem;
+  line-height: 2.2rem;
+}
+
+.heading-2 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.5625em;
+}
+
+.text-regular {
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1.2569rem;
+}
+
+.text-sm {
+  font-weight: normal;
+  font-size: 0.75rem;
+  line-height: 0.9375rem;
+}
+
+.text-xs {
+  font-weight: normal;
+  font-size: 0.625rem;
+  line-height: 0.8125rem;
+  letter-spacing: -0.02em;
+}
+.text-xxs {
+  font-weight: normal;
+  font-size: 0.5rem;
+  line-height: 0.625rem;
+  letter-spacing: -0.02em;
+}
+
+.text-xl {
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+}
+
+.text-semibold {
+  font-weight: 600;
+}

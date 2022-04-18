@@ -1,0 +1,23 @@
+@mixin font($fname, $fstyle, $fweight, $furl) {
+  @font-face {
+    font-family: $fname;
+    font-style: $fstyle;
+    font-weight: $fweight;
+    font-display: swap; // Uncomment to initially display system fonts
+    src: local($fname), url($furl) format('woff2');
+  }
+}
+
+@include font(
+  'SourceSansPro',
+  normal,
+  600,
+  '../fonts/SourceSansPro-SemiBold.ttf'
+);
+@include font(
+  'SourceSansPro',
+  normal,
+  400,
+  '../fonts/SourceSansPro-Regular.ttf'
+);
+@include font('Inter', normal, 600, '../fonts/Inter-SemiBold.ttf');

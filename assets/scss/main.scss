@@ -1,1 +1,29 @@
+@import 'fonts';
+@import 'variables';
+@import 'typography';
 
+.grid-layout {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+}
+
+h1,
+h2,
+h3,
+h4,
+body {
+  margin: 0;
+}
+p {
+  margin-bottom: 0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
