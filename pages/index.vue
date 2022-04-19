@@ -9,68 +9,47 @@
         <add-product />
       </div>
       <div class="add-product__content">
-        <product-card
-          v-for="product in productCards"
-          :key="product.id"
-          :img-link="product.imgLink"
-          :title="product.title"
-          :description="product.description"
-          :price="product.price"
-        />
+        <transition-group name="product-cards" tag="div">
+          <product-card
+            v-for="product in productCards"
+            :id="product.id"
+            :key="product.id"
+            :img-link="product.imgLink"
+            :title="product.title"
+            :description="product.description"
+            :price="product.price"
+          />
+        </transition-group>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ProductCard from '~/components/cards/ProductCard.vue'
 import AddProduct from '~/components/forms/AddProduct.vue'
 import ProductFilter from '~/components/filters/ProductFilter.vue'
 export default {
   name: 'IndexPage',
   components: { AddProduct, ProductCard, ProductFilter },
-  data() {
-    return {
-      productCards: [
-        {
-          id: 0,
-          title: 'Наименование товара',
-          description:
-            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          imgLink: './product-img.jpg',
-          price: 10000,
-        },
-        {
-          id: 2,
-          title: 'Наименование товара',
-          description:
-            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          imgLink: './product-img.jpg',
-          price: 10000,
-        },
-        {
-          id: 3,
-          title: 'Наименование товара',
-          description:
-            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          imgLink: './product-img.jpg',
-          price: 10000,
-        },
-        {
-          id: 4,
-          title: 'Наименование товара',
-          description:
-            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          imgLink: './product-img.jpg',
-          price: 10000,
-        },
-      ],
-    }
+  computed: {
+    ...mapGetters({
+      productCards: 'products/getProductCard',
+    }),
   },
 }
 </script>
 
 <style lang="scss">
+.product-cards-enter,
+.product-cards-leave-to {
+  opacity: 0;
+  transform: translateY(-50px);
+}
+.product-cards-leave-active {
+  position: absolute;
+}
 .add-product {
   background: rgba(255, 254, 251, 0.8);
   padding: 32px;
@@ -94,10 +73,13 @@ export default {
     }
   }
   &__content {
-    display: grid;
-    grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(332px, 1fr));
     grid-column: span 12;
+
+    & > div {
+      display: grid;
+      grid-gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(332px, 1fr));
+    }
 
     @media (max-width: 1100px) {
       grid-column: span 10;
