@@ -16,6 +16,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    type: {
+      type: String,
+      default: 'button',
+      validator(value) {
+        return ['submit', 'reset', 'button'].includes(value)
+      },
+    },
     icon: {
       type: Boolean,
       default: false,

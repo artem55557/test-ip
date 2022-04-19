@@ -1,34 +1,62 @@
 <template>
-  <form class="form">
+  <form class="form" @submit.prevent="handlerOnSubmit">
     <the-input
       v-for="input in formInputs"
       :key="input.id"
+      v-model="formData[input.name]"
       :label="input.label"
       :placeholder="input.placeholder"
       :required="input.required"
       :error="input.error"
       :textarea="input.textarea"
     ></the-input>
-    <the-button :disabled="true" class="w-100"
+    <the-button
+      :disabled="!isValidForm"
+      :success="isValidForm"
+      :type="'submit'"
+      class="w-100"
       ><template #label>Добавить товар</template></the-button
     >
   </form>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators'
 import TheButton from '~/components/basic/formElement/TheButton.vue'
 import TheInput from '~/components/basic/formElement/TheInput.vue'
+import validators from '~/services/validators'
 export default {
   name: 'AddProduct',
   components: { TheInput, TheButton },
+  validations: {
+    formData: {
+      title: { required },
+      imgLink: { required },
+      price: { required },
+    },
+  },
   data() {
     return {
-      formInputs: [
+      formData: {
+        title: '',
+        description: '',
+        imgLink: '',
+        price: '',
+      },
+    }
+  },
+  computed: {
+    isValidForm() {
+      return !this.$v.$invalid
+    },
+    formInputs() {
+      return [
         {
           id: 0,
           name: 'title',
           label: 'Наименование товара',
           placeholder: 'Введите наименование товара',
           required: true,
+          error: validators.requiredErrors(this.$v.formData.title),
         },
         {
           id: 1,
@@ -44,7 +72,7 @@ export default {
           label: 'Ссылка на изображение товара',
           placeholder: 'Введите ссылку',
           required: true,
-          error: 'Поле является обязательным',
+          error: validators.requiredErrors(this.$v.formData.imgLink),
         },
         {
           id: 3,
@@ -52,9 +80,23 @@ export default {
           label: 'Цена товара',
           placeholder: 'Введите цену',
           required: true,
+          error: validators.requiredErrors(this.$v.formData.price),
         },
-      ],
-    }
+      ]
+    },
+  },
+  methods: {
+    handlerOnSubmit() {
+      const { title, description, imgLink, price } = this.formData
+      const data = {
+        title,
+        description,
+        imgLink,
+        price,
+        id: Date.now(),
+      }
+      console.log(data)
+    },
   },
 }
 </script>
