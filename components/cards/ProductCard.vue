@@ -11,16 +11,21 @@
       <p class="product-card__description">{{ description }}</p>
     </div>
     <div class="product-card__footer text-xl text-semibold">
-      {{ price }} руб.
+      {{ priseMask }} руб.
     </div>
   </div>
 </template>
 <script>
 import TheButton from '../basic/formElement/TheButton.vue'
+import filters from '~/services/filters'
 export default {
   name: 'ProductCard',
   components: { TheButton },
   props: {
+    id: {
+      type: [String, Number],
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -34,8 +39,13 @@ export default {
       required: true,
     },
     price: {
-      type: Number,
+      type: [String, Number],
       required: true,
+    },
+  },
+  computed: {
+    priseMask() {
+      return filters.numberWithSpaces(this.price)
     },
   },
 }

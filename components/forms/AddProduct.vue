@@ -4,12 +4,14 @@
       v-for="input in formInputs"
       :key="input.id"
       v-model="formData[input.name]"
+      :name="input.name"
       :label="input.label"
       :placeholder="input.placeholder"
       :required="input.required"
       :error="input.error"
       :textarea="input.textarea"
     ></the-input>
+    <!-- <input v-model="formData.price" type="text" /> -->
     <the-button
       :disabled="!isValidForm"
       :success="isValidForm"
@@ -24,6 +26,7 @@ import { required } from 'vuelidate/lib/validators'
 import TheButton from '~/components/basic/formElement/TheButton.vue'
 import TheInput from '~/components/basic/formElement/TheInput.vue'
 import validators from '~/services/validators'
+import filters from '~/services/filters'
 export default {
   name: 'AddProduct',
   components: { TheInput, TheButton },
@@ -45,6 +48,9 @@ export default {
     }
   },
   computed: {
+    priceWatch() {
+      return this.formData.price
+    },
     isValidForm() {
       return !this.$v.$invalid
     },
@@ -85,6 +91,13 @@ export default {
       ]
     },
   },
+  watch: {
+    priceWatch(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.formData.price = filters.numberWithSpaces(this.formData.price)
+      }
+    },
+  },
   methods: {
     handlerOnSubmit() {
       const { title, description, imgLink, price } = this.formData
@@ -95,7 +108,7 @@ export default {
         price,
         id: Date.now(),
       }
-      console.log(data)
+      this.$store.dispatch('products/addProductCard', data)
     },
   },
 }

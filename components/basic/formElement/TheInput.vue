@@ -8,9 +8,12 @@
       :required="required"
       :disabled="disabled"
       :value="value"
+      :name="name"
       @input="updateValue($event.target.value)"
+      @focus="focusHandler"
+      @blur="blurHandler"
     />
-    <div class="the-input__error-text text-xxs">{{ error }}</div>
+    <div v-if="error" class="the-input__error-text text-xxs">{{ error }}</div>
   </label>
 </template>
 <script>
@@ -44,6 +47,10 @@ export default {
       type: String,
       default: '',
     },
+    name: {
+      type: String,
+      default: '',
+    },
     textarea: {
       type: Boolean,
       default: false,
@@ -64,6 +71,12 @@ export default {
     updateValue(value) {
       this.$emit('input', value)
     },
+    focusHandler(e) {
+      this.$emit('focus', e)
+    },
+    blurHandler(e) {
+      this.$emit('blur', e)
+    },
   },
 }
 </script>
@@ -82,7 +95,6 @@ export default {
   input,
   textarea {
     background: $c-white;
-    color: $c-gray-500;
     border: 1px solid transparent;
     border-radius: 4px;
     box-sizing: border-box;
