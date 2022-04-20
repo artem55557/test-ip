@@ -1,6 +1,10 @@
 <template>
   <div class="product-card">
-    <the-button :icon="true" :icon-only="true" class="product-card__delete-btn"
+    <the-button
+      :icon="true"
+      :icon-only="true"
+      class="product-card__delete-btn"
+      @click="clickHandler(id)"
       ><template #icon> <svg-icon name="delete" /> </template
     ></the-button>
     <div class="product-card__header">
@@ -46,6 +50,11 @@ export default {
   computed: {
     priseMask() {
       return filters.numberWithSpaces(this.price)
+    },
+  },
+  methods: {
+    clickHandler(id) {
+      this.$emit('delete', id)
     },
   },
 }

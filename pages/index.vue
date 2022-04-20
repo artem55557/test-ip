@@ -18,10 +18,16 @@
             :title="product.title"
             :description="product.description"
             :price="product.price"
+            @delete="openModal"
           />
         </transition-group>
       </div>
     </div>
+    <the-modal :is-open="isOpenModal" @ok="confirmModal" @close="closeModal"
+      ><template #body
+        >Действительно хотите удалить запись?</template
+      ></the-modal
+    >
   </section>
 </template>
 
@@ -30,13 +36,33 @@ import { mapGetters } from 'vuex'
 import ProductCard from '~/components/cards/ProductCard.vue'
 import AddProduct from '~/components/forms/AddProduct.vue'
 import ProductFilter from '~/components/filters/ProductFilter.vue'
+import TheModal from '~/components/basic/TheModal.vue'
 export default {
   name: 'IndexPage',
-  components: { AddProduct, ProductCard, ProductFilter },
+  components: { AddProduct, ProductCard, ProductFilter, TheModal },
+  data() {
+    return { isOpenModal: false, deleteCardId: '' }
+  },
   computed: {
     ...mapGetters({
       productCards: 'products/getProductCard',
     }),
+  },
+  methods: {
+    openModal(id) {
+      this.isOpenModal = true
+      this.deleteCardId = id
+    },
+    confirmModal() {
+      this.isOpenModal = false
+      this.deleteProductCard(this.deleteCardId)
+    },
+    closeModal() {
+      this.isOpenModal = false
+    },
+    deleteProductCard(id) {
+      this.$store.dispatch('products/deleteProductCard', id)
+    },
   },
 }
 </script>
@@ -79,6 +105,7 @@ export default {
       display: grid;
       grid-gap: 1rem;
       grid-template-columns: repeat(auto-fit, minmax(332px, 1fr));
+      // transition: all 0.s ease-in-out;
     }
 
     @media (max-width: 1100px) {
