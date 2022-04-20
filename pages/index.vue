@@ -44,6 +44,7 @@ export default {
     return {
       isOpenModal: false,
       deleteCardId: '',
+      currentSort: 'name',
       mockData: [
         {
           id: 0,
@@ -51,7 +52,7 @@ export default {
           description:
             'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           imgLink: './product-img.jpg',
-          price: '10000',
+          price: 10000,
         },
         {
           id: 2,
@@ -59,7 +60,7 @@ export default {
           description:
             'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           imgLink: './product-img.jpg',
-          price: '10000',
+          price: 10000,
         },
         {
           id: 3,
@@ -67,7 +68,7 @@ export default {
           description:
             'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           imgLink: './product-img.jpg',
-          price: '10000',
+          price: 10000,
         },
         {
           id: 4,
@@ -75,15 +76,31 @@ export default {
           description:
             'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           imgLink: './product-img.jpg',
-          price: '10000',
+          price: 10000,
         },
       ],
     }
   },
   computed: {
     ...mapGetters({
-      productCards: 'products/getProductCard',
+      allProductCards: 'products/getProductCard',
     }),
+    productCards() {
+      if (this.currentSort === 'price-min') {
+        return this.sortProductsByPrice(this.allProductCards)
+      } else if (this.currentSort === 'price-max') {
+        return this.sortProductsByPrice(this.allProductCards).reverse()
+      } else if (this.currentSort === 'name') {
+        return this.sortProductsByName(this.allProductCards)
+      } else {
+        return this.allProductCards
+      }
+    },
+  },
+  watch: {
+    $route(to, from) {
+      this.currentSort = to.query.sort
+    },
   },
   mounted() {
     this.mockData.forEach((element) => {
@@ -92,6 +109,22 @@ export default {
     this.$store.dispatch('products/fethAllProducts')
   },
   methods: {
+    sortProductsByPrice(array) {
+      const newArray = [...array]
+      return newArray.sort((a, b) => {
+        return a.price - b.price
+      })
+    },
+    sortProductsByName(array) {
+      const newArray = [...array]
+      return newArray.sort((a, b) => {
+        const nameA = a.title.toLowerCase()
+        const nameB = b.title.toLowerCase()
+        if (nameA < nameB) return -1
+        if (nameA > nameB) return 1
+        return 0
+      })
+    },
     openModal(id) {
       this.isOpenModal = true
       this.deleteCardId = id

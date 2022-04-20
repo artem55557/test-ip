@@ -105,7 +105,7 @@ export default {
         title,
         description,
         imgLink,
-        price,
+        price: Number(filters.numberDeleteSpace(price)),
         id: Date.now(),
       }
       this.$store.dispatch('products/addProductCard', data)
