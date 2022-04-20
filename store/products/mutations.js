@@ -6,4 +6,8 @@ export default {
   removeProductCardById(state, idCard) {
     state.productCards = state.productCards.filter((item) => item.id !== idCard)
   },
+
+  setProductCards(state, allProducts) {
+    state.productCards = allProducts
+  },
 }

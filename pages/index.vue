@@ -41,12 +41,55 @@ export default {
   name: 'IndexPage',
   components: { AddProduct, ProductCard, ProductFilter, TheModal },
   data() {
-    return { isOpenModal: false, deleteCardId: '' }
+    return {
+      isOpenModal: false,
+      deleteCardId: '',
+      mockData: [
+        {
+          id: 0,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: '10000',
+        },
+        {
+          id: 2,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: '10000',
+        },
+        {
+          id: 3,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: '10000',
+        },
+        {
+          id: 4,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: '10000',
+        },
+      ],
+    }
   },
   computed: {
     ...mapGetters({
       productCards: 'products/getProductCard',
     }),
+  },
+  mounted() {
+    this.mockData.forEach((element) => {
+      this.$store.dispatch('products/addProductCard', element)
+    })
+    this.$store.dispatch('products/fethAllProducts')
   },
   methods: {
     openModal(id) {
