@@ -1,5 +1,5 @@
 <template>
-  <select class="the-select">
+  <select class="the-select" @change="$emit('change', $event.target.value)">
     <option v-for="item in items" :key="item.value" :value="item.value">
       {{ item.label }}
     </option>

@@ -1,5 +1,5 @@
 <template>
-  <the-select :items="filters"></the-select>
+  <the-select :items="filters" @change="selectedHandler"></the-select>
 </template>
 <script>
 import TheSelect from '~/components/basic/formElement/TheSelect.vue'
@@ -14,6 +14,11 @@ export default {
         { value: 'name', label: 'По наименованию' },
       ],
     }
+  },
+  methods: {
+    selectedHandler(filter) {
+      this.$router.push({ path: '/', query: { sort: `${filter}` } })
+    },
   },
 }
 </script>

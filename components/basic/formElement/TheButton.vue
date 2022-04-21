@@ -1,5 +1,10 @@
 <template>
-  <button class="the-button" :class="styleClass" :disabled="disabled">
+  <button
+    class="the-button"
+    :class="styleClass"
+    :disabled="disabled"
+    @click="$emit('click')"
+  >
     <span v-if="icon" class="the-button__icon"><slot name="icon"></slot></span>
     <span v-if="!iconOnly"><slot name="label"></slot></span>
   </button>

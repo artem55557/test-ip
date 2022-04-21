@@ -18,10 +18,16 @@
             :title="product.title"
             :description="product.description"
             :price="product.price"
+            @delete="openModal"
           />
         </transition-group>
       </div>
     </div>
+    <the-modal :is-open="isOpenModal" @ok="confirmModal" @close="closeModal"
+      ><template #body
+        >Действительно хотите удалить запись?</template
+      ></the-modal
+    >
   </section>
 </template>
 
@@ -30,13 +36,109 @@ import { mapGetters } from 'vuex'
 import ProductCard from '~/components/cards/ProductCard.vue'
 import AddProduct from '~/components/forms/AddProduct.vue'
 import ProductFilter from '~/components/filters/ProductFilter.vue'
+import TheModal from '~/components/basic/TheModal.vue'
 export default {
   name: 'IndexPage',
-  components: { AddProduct, ProductCard, ProductFilter },
+  components: { AddProduct, ProductCard, ProductFilter, TheModal },
+  data() {
+    return {
+      isOpenModal: false,
+      deleteCardId: '',
+      currentSort: 'name',
+      mockData: [
+        {
+          id: 0,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: 10000,
+        },
+        {
+          id: 2,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: 10000,
+        },
+        {
+          id: 3,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: 10000,
+        },
+        {
+          id: 4,
+          title: 'Наименование товара',
+          description:
+            'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          imgLink: './product-img.jpg',
+          price: 10000,
+        },
+      ],
+    }
+  },
   computed: {
     ...mapGetters({
-      productCards: 'products/getProductCard',
+      allProductCards: 'products/getProductCard',
     }),
+    productCards() {
+      if (this.currentSort === 'price-min') {
+        return this.sortProductsByPrice(this.allProductCards)
+      } else if (this.currentSort === 'price-max') {
+        return this.sortProductsByPrice(this.allProductCards).reverse()
+      } else if (this.currentSort === 'name') {
+        return this.sortProductsByName(this.allProductCards)
+      } else {
+        return this.allProductCards
+      }
+    },
+  },
+  watch: {
+    $route(to, from) {
+      this.currentSort = to.query.sort
+    },
+  },
+  mounted() {
+    this.mockData.forEach((element) => {
+      this.$store.dispatch('products/addProductCard', element)
+    })
+    this.$store.dispatch('products/fethAllProducts')
+  },
+  methods: {
+    sortProductsByPrice(array) {
+      const newArray = [...array]
+      return newArray.sort((a, b) => {
+        return a.price - b.price
+      })
+    },
+    sortProductsByName(array) {
+      const newArray = [...array]
+      return newArray.sort((a, b) => {
+        const nameA = a.title.toLowerCase()
+        const nameB = b.title.toLowerCase()
+        if (nameA < nameB) return -1
+        if (nameA > nameB) return 1
+        return 0
+      })
+    },
+    openModal(id) {
+      this.isOpenModal = true
+      this.deleteCardId = id
+    },
+    confirmModal() {
+      this.isOpenModal = false
+      this.deleteProductCard(this.deleteCardId)
+    },
+    closeModal() {
+      this.isOpenModal = false
+    },
+    deleteProductCard(id) {
+      this.$store.dispatch('products/deleteProductCard', id)
+    },
   },
 }
 </script>
