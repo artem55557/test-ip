@@ -3,15 +3,23 @@
     <the-input
       v-for="input in formInputs"
       :key="input.id"
-      v-model="formData[input.name]"
-      :name="input.name"
       :label="input.label"
-      :placeholder="input.placeholder"
       :required="input.required"
       :error="input.error"
-      :textarea="input.textarea"
-    ></the-input>
-    <!-- <input v-model="formData.price" type="text" /> -->
+      ><input
+        v-if="!input.textarea"
+        v-model="formData[input.name]"
+        :name="input.name"
+        :placeholder="input.placeholder"
+        type="text"
+      />
+      <textarea
+        v-else
+        v-model="formData[input.name]"
+        :name="input.name"
+        :placeholder="input.placeholder"
+      ></textarea>
+    </the-input>
     <the-button
       :disabled="!isValidForm"
       :success="isValidForm"
@@ -19,6 +27,11 @@
       class="w-100"
       ><template #label>Добавить товар</template></the-button
     >
+    <transition name="fade-succes">
+      <div v-if="isSuccesMessage" class="form__success-message">
+        Товар успешно добавлен!
+      </div>
+    </transition>
   </form>
 </template>
 <script>
@@ -45,6 +58,7 @@ export default {
         imgLink: '',
         price: '',
       },
+      isSuccesMessage: false,
     }
   },
   computed: {
@@ -109,12 +123,33 @@ export default {
         id: Date.now(),
       }
       this.$store.dispatch('products/addProductCard', data)
+      this.resetFormData()
+      this.isSuccesMessage = true
+      setTimeout(() => (this.isSuccesMessage = false), 3000)
+    },
+    resetFormData() {
+      this.$v.$reset()
+      Object.keys(this.formData).forEach((key) => (this.formData[key] = ''))
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.fade-succes-enter {
+  opacity: 0;
+  transform: translateY(-15px);
+}
+.fade-succes-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.fade-succes-enter-active {
+  transition: all 0.3s ease;
+}
+.fade-succes-leave-active {
+  transition: all 0.5s ease-out;
+}
 .form {
   padding: 24px;
   background: $c-white;
@@ -126,6 +161,15 @@ export default {
 
   & * {
     margin-bottom: 16px;
+  }
+
+  &__success-message {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: $c-green-600;
   }
 }
 </style>

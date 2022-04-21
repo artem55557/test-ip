@@ -1,26 +1,28 @@
 <template>
-  <div v-if="isOpen" class="modal">
-    <div class="modal__overlay" @click.self="closeModal">
-      <div class="modal__window">
-        <div class="modal__header">
-          <slot name="header"></slot>
-        </div>
-        <div class="modal__body">
-          <slot name="body"></slot>
-        </div>
-        <div class="modal__footer">
-          <slot name="footer">
-            <the-button @click="confirmModal">
-              <template #label>Удалить</template>
-            </the-button>
-            <the-button @click="closeModal">
-              <template #label>Отмена</template>
-            </the-button>
-          </slot>
+  <transition name="fade-modal">
+    <div v-if="isOpen" class="modal">
+      <div class="modal__overlay" @click.self="closeModal">
+        <div class="modal__window">
+          <div class="modal__header">
+            <slot name="header"></slot>
+          </div>
+          <div class="modal__body">
+            <slot name="body"></slot>
+          </div>
+          <div class="modal__footer">
+            <slot name="footer">
+              <the-button @click="confirmModal">
+                <template #label>Удалить</template>
+              </the-button>
+              <the-button @click="closeModal">
+                <template #label>Отмена</template>
+              </the-button>
+            </slot>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 import TheButton from '~/components/basic/formElement/TheButton.vue'
@@ -39,9 +41,6 @@ export default {
     }
   },
   methods: {
-    // closeModal() {
-    //   this.show = false
-    // },
     closeModal() {
       this.$emit('close')
     },
@@ -52,6 +51,16 @@ export default {
 }
 </script>
 <style lang="scss">
+.fade-modal-enter-active,
+.fade-modal-active,
+.fade-modal-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-modal-enter,
+.fade-modal-leave-to {
+  opacity: 0;
+}
 .modal {
   &__overlay {
     position: fixed;

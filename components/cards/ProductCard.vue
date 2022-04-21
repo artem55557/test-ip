@@ -61,13 +61,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .product-card {
+  display: flex;
+  flex-direction: column;
   background: $c-white;
   box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04),
     0px 6px 10px rgba(0, 0, 0, 0.02);
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
-  // cursor: url('../assets/sprite/gen/icons#i-cursor'), auto;
-  // cursor: url('./cursor.svg'), auto;
+  cursor: url(~/assets/sprite/svg/cursor.svg), auto;
   position: relative;
 
   &__header {
@@ -93,21 +94,16 @@ export default {
   &__body {
     padding: 16px;
   }
-
-  &__title {
-  }
-
-  &__description {
-  }
-
   &__footer {
+    flex-grow: 1;
     padding: 16px;
+    display: flex;
+    align-items: flex-end;
   }
 
   &:hover {
     box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.1),
-      0px 6px 10px rgba(0, 0, 0, 0.02);
-    transform: scale(1.01);
+      0px 6px 15px rgba(0, 0, 0, 0.02);
     .product-card__delete-btn {
       visibility: visible;
       opacity: 1;

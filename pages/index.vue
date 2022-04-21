@@ -181,7 +181,6 @@ export default {
       display: grid;
       grid-gap: 1rem;
       grid-template-columns: repeat(auto-fit, minmax(332px, 1fr));
-      // transition: all 0.s ease-in-out;
     }
 
     @media (max-width: 1100px) {

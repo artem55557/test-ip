@@ -1,18 +1,20 @@
 <template>
   <label class="the-input text-sm" :class="styleClass">
     <div class="the-input__label text-xs">{{ label }}</div>
-    <component
-      :is="htmlTagInput"
-      :type="type"
-      :placeholder="placeholder"
-      :required="required"
-      :disabled="disabled"
-      :value="value"
-      :name="name"
-      @input="updateValue($event.target.value)"
-      @focus="focusHandler"
-      @blur="blurHandler"
-    />
+    <slot>
+      <component
+        :is="htmlTagInput"
+        :value="value"
+        :type="type"
+        :placeholder="placeholder"
+        :required="required"
+        :disabled="disabled"
+        :name="name"
+        @input="updateValue($event.target.value)"
+        @focus="focusHandler"
+        @blur="blurHandler"
+      />
+    </slot>
     <div v-if="error" class="the-input__error-text text-xxs">{{ error }}</div>
   </label>
 </template>
@@ -100,6 +102,7 @@ export default {
     box-sizing: border-box;
     width: 100%;
     padding: 10px 16px;
+    margin: 0;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
 
